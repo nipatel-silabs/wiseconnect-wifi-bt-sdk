@@ -385,7 +385,7 @@ uint16_t rsi_driver_process_bt_resp_handler(rsi_pkt_t *pkt);
 uint16_t rsi_bt_get_proto_type(uint16_t rsp_type, rsi_bt_cb_t **bt_cb);
 uint8_t rsi_bt_get_ACL_type(uint16_t rsp_type);
 
-int32_t rsi_bt_get_local_name(rsi_bt_resp_get_local_name_t *bt_resp_get_local_name);
+//int32_t rsi_bt_get_local_name(rsi_bt_resp_get_local_name_t *bt_resp_get_local_name);
 int32_t rsi_bt_per_cw_mode(struct rsi_bt_per_cw_mode_s *bt_cw_mode);
 #ifndef SAPIS_BT_STACK_ON_HOST
 int32_t intialize_bt_stack(uint8_t mode);

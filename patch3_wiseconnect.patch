@@ -1,0 +1,201 @@
+diff --git a/sapi/bluetooth/rsi_ble_gatt_apis.c b/sapi/bluetooth/rsi_ble_gatt_apis.c
+index c76e1e0..9b35465 100644
+--- a/sapi/bluetooth/rsi_ble_gatt_apis.c
++++ b/sapi/bluetooth/rsi_ble_gatt_apis.c
+@@ -1357,7 +1357,7 @@ int32_t rsi_ble_indicate_value(uint8_t *dev_addr, uint16_t handle, uint16_t data
+ }
+ /** @} */
+ /** @addtogroup BT-LOW-ENERGY4
+- * * @{
++ * * @{ */
+ /*==============================================*/
+ /**
+  * @fn         int32_t rsi_ble_indicate_value_sync(uint8_t *dev_addr, uint16_t handle,
+diff --git a/sapi/driver/rsi_bt_ble.c b/sapi/driver/rsi_bt_ble.c
+index 7e21bd3..b3f73f4 100644
+--- a/sapi/driver/rsi_bt_ble.c
++++ b/sapi/driver/rsi_bt_ble.c
+@@ -421,7 +421,7 @@ uint32_t rsi_bt_get_timeout(uint16_t cmd_type, uint16_t protocol_type)
+                  || ((cmd_type >= RSI_BT_REQ_AVRCP_GET_CAPABILITES) && (cmd_type <= RSI_BT_REQ_AVRCP_CMD_REJECT))
+                  || ((cmd_type >= RSI_BT_REQ_AVRCP_SET_ABS_VOL) && (cmd_type <= RSI_BT_REQ_AVRCP_SET_ABS_VOL_RESP))) {
+         return_value = RSI_BT_AVRCP_CMD_RESP_WAIT_TIME;
+-      } else if ((cmd_type >= RSI_BT_REQ_HFP_CONNECT) && (cmd_type <= RSI_BT_REQ_HFP_AUDIOTRANSFER)
++      } else if (((cmd_type >= RSI_BT_REQ_HFP_CONNECT) && (cmd_type <= RSI_BT_REQ_HFP_AUDIOTRANSFER))
+                  || (cmd_type == RSI_BT_REQ_HFP_AUDIODATA)) {
+         return_value = RSI_BT_HFP_CMD_RESP_WAIT_TIME;
+       } else if ((cmd_type >= RSI_BT_REQ_PBAP_CONNECT) && (cmd_type <= RSI_BT_REQ_PBAP_CONTACTS)) {
+diff --git a/sapi/include/rsi_ble_apis.h b/sapi/include/rsi_ble_apis.h
+index 7ef452b..abf45fc 100644
+--- a/sapi/include/rsi_ble_apis.h
++++ b/sapi/include/rsi_ble_apis.h
+@@ -1035,8 +1035,11 @@ typedef struct chip_ble_buffers_stats_s {
+ /******************************************************
+  * *              GAP API's Declarations
+  * ******************************************************/
+-
+ //*==============================================*/
++#ifdef __cplusplus
++extern "C" {
++#endif
++
+ /**
+  * @fn         rsi_convert_db_to_powindex
+  * */
+@@ -2387,4 +2390,7 @@ int32_t rsi_ble_mtu_exchange_resp(uint8_t *dev_addr, uint8_t mtu_size);
+ void rsi_ble_gap_extended_register_callbacks(rsi_ble_on_remote_features_t ble_on_remote_features_event,
+                                              rsi_ble_on_le_more_data_req_t ble_on_le_more_data_req_event);
+ int32_t rsi_ble_set_wo_resp_notify_buf_info(uint8_t *dev_addr, uint8_t buf_mode, uint8_t buf_cnt);
++#ifdef __cplusplus
++}
++#endif
+ #endif
+diff --git a/sapi/include/rsi_bt_apis.h b/sapi/include/rsi_bt_apis.h
+index edfb9c0..c7334d8 100644
+--- a/sapi/include/rsi_bt_apis.h
++++ b/sapi/include/rsi_bt_apis.h
+@@ -3704,7 +3704,7 @@ int32_t rsi_bt_spp_transfer(uint8_t *remote_dev_addr, uint8_t *data, uint16_t le
+ int32_t rsi_bt_hfp_init(void);
+ int32_t rsi_bt_hfp_connect(uint8_t *remote_dev_addr);
+ int32_t rsi_bt_hfp_disconnect(uint8_t *remote_dev_addr);
+-int32_t rsi_bt_hfp_phoneoperator(uint8_t *operator);
++int32_t rsi_bt_hfp_phoneoperator(uint8_t *operator1);
+ int32_t rsi_bt_hfp_callaccept(void);
+ int32_t rsi_bt_hfp_callreject(void);
+ int32_t rsi_bt_hfp_dialnum(uint8_t *phone_no);
+diff --git a/sapi/include/rsi_bt_common.h b/sapi/include/rsi_bt_common.h
+index 943c2dd..a2a2d79 100644
+--- a/sapi/include/rsi_bt_common.h
++++ b/sapi/include/rsi_bt_common.h
+@@ -385,7 +385,7 @@ uint16_t rsi_driver_process_bt_resp_handler(rsi_pkt_t *pkt);
+ uint16_t rsi_bt_get_proto_type(uint16_t rsp_type, rsi_bt_cb_t **bt_cb);
+ uint8_t rsi_bt_get_ACL_type(uint16_t rsp_type);
+ 
+-int32_t rsi_bt_get_local_name(rsi_bt_resp_get_local_name_t *bt_resp_get_local_name);
++//int32_t rsi_bt_get_local_name(rsi_bt_resp_get_local_name_t *bt_resp_get_local_name);
+ int32_t rsi_bt_per_cw_mode(struct rsi_bt_per_cw_mode_s *bt_cw_mode);
+ #ifndef SAPIS_BT_STACK_ON_HOST
+ int32_t intialize_bt_stack(uint8_t mode);
+diff --git a/sapi/include/rsi_bt_common_apis.h b/sapi/include/rsi_bt_common_apis.h
+index 6f87d1c..f90abf7 100644
+--- a/sapi/include/rsi_bt_common_apis.h
++++ b/sapi/include/rsi_bt_common_apis.h
+@@ -52,7 +52,12 @@
+ 
+ /******************************************************
+  * *              BT Common API's Declarations
++ 
+  * ******************************************************/
++
++#ifdef __cplusplus
++extern "C" {
++#endif
+ /*==============================================*/
+ /**
+  * @fn          int32_t rsi_bt_set_bd_addr(uint8_t *dev_addr)
+@@ -65,6 +70,7 @@ int32_t rsi_bt_set_bd_addr(uint8_t *dev_addr);
+  * @fn          int32_t rsi_bt_ber_enable(struct rsi_bt_ber_cmd_s *rsi_bt_ber_cmd)
+  *
+  */
++
+ int32_t rsi_bt_ber_enable_or_disable(struct rsi_bt_ber_cmd_s *ber_cmd);
+ 
+ /*==============================================*/
+@@ -157,4 +163,7 @@ int32_t rsi_bt_get_bt_stack_version(rsi_bt_resp_get_bt_stack_version_t *bt_resp_
+ 
+ int32_t rsi_bt_power_save_profile(uint8_t psp_mode, uint8_t psp_type);
+ 
++#ifdef __cplusplus
++}
++#endif
+ #endif
+diff --git a/sapi/include/rsi_driver.h b/sapi/include/rsi_driver.h
+index 9106b6f..1665029 100644
+--- a/sapi/include/rsi_driver.h
++++ b/sapi/include/rsi_driver.h
+@@ -150,7 +150,7 @@
+ 
+ //SL_PRINTF logging call
+ #ifndef SL_PRINTF
+-#define SL_PRINTF(...)
++#define SL_PRINTF(...) {}
+ #endif
+ 
+ /******************************************************
+diff --git a/sapi/include/rsi_socket.h b/sapi/include/rsi_socket.h
+index cc43d3e..2bfccec 100644
+--- a/sapi/include/rsi_socket.h
++++ b/sapi/include/rsi_socket.h
+@@ -83,7 +83,7 @@
+ #define PF_INET  AF_INET
+ #define PF_INET6 AF_INET6
+ 
+-#define INADDR_ANY              0
++//#define INADDR_ANY              0
+ #define BSD_LOCAL_IF_INADDR_ANY 0xFFFFFFFF
+ /* Define API error codes.  */
+ 
+@@ -416,7 +416,7 @@ struct rsi_in6_addr {
+   } _S6_un;
+ };
+ 
+-#define s6_addr   _S6_un._S6_u8
++//#define s6_addr   _S6_un._S6_u8
+ #define s6_addr32 _S6_un._S6_u32
+ 
+ struct rsi_sockaddr_in6 {
+diff --git a/sapi/include/rsi_wlan.h b/sapi/include/rsi_wlan.h
+index 1a1e1f7..654fd32 100644
+--- a/sapi/include/rsi_wlan.h
++++ b/sapi/include/rsi_wlan.h
+@@ -850,7 +850,7 @@ typedef struct rsi_req_cert_valid_s {
+ 
+ } rsi_req_cert_valid_t;
+ #endif
+-#define RSI_CERT_MAX_DATA_SIZE (RSI_MAX_CERT_SEND_SIZE – (sizeof(struct rsi_cert_info_s)))
++//#define RSI_CERT_MAX_DATA_SIZE (RSI_MAX_CERT_SEND_SIZE – (sizeof(struct rsi_cert_info_s)))
+ // Set certificate command request structure
+ typedef struct rsi_req_set_certificate_s {
+   // certificate information structure
+diff --git a/sapi/include/rsi_wlan_non_rom.h b/sapi/include/rsi_wlan_non_rom.h
+index cc6f1fd..316a5b9 100644
+--- a/sapi/include/rsi_wlan_non_rom.h
++++ b/sapi/include/rsi_wlan_non_rom.h
+@@ -380,24 +380,24 @@ struct rsi_bit_2_string {
+   char *string;
+ };
+ static const struct rsi_bit_2_string STATE[WLAN_MODULE_STATES] = {
+-  { 0x10, "Beacon Loss (Failover Roam)" },
+-  { 0x20, "De-authentication (AP induced Roam / Disconnect from supplicant" },
+-  { 0x50, "Current AP is best" },
+-  { 0x60, "Better AP found" },
+-  { 0x70, "No AP found" },
+-  { 0x80, "Associated" },
+-  { 0x90, "Unassociated" },
+-  { 0x01, "Authentication denial" },
+-  { 0x02, "Association denial" },
+-  { 0x03, "AP not present" },
+-  { 0x05, "WPA2 key exchange failed" }
++ { 0x10, (char *)"Beacon Loss (Failover Roam)" },
++  { 0x20, (char *)"De-authentication (AP induced Roam / Disconnect from supplicant" },
++  { 0x50, (char *)"Current AP is best" },
++  { 0x60, (char *)"Better AP found" },
++  { 0x70, (char *)"No AP found" },
++  { 0x80, (char *)"Associated" },
++  { 0x90, (char *)"Unassociated" },
++  { 0x01, (char *)"Authentication denial" },
++  { 0x02, (char *)"Association denial" },
++  { 0x03, (char *)"AP not present" },
++  { 0x05, (char *)"WPA2 key exchange failed" }
+ 
+ };
+ 
+ static const struct rsi_bit_2_string REASONCODE[WLAN_REASON_CODES] = {
+-  { 0x01, "Authentication denial" },       { 0x02, "Association denial" },
+-  { 0x10, "Beacon Loss (Failover Roam)" }, { 0x20, "De-authentication (AP induced Roam/Deauth from supplicant)" },
+-  { 0x07, "PSK not configured" },          { 0x05, "Roaming not enabled" },
++ { 0x01, (char *)"Authentication denial" },       { 0x02, (char *)"Association denial" },
++  { 0x10, (char *)"Beacon Loss (Failover Roam)" }, { 0x20, (char *)"De-authentication (AP induced Roam/Deauth from supplicant)" },
++  { 0x07, (char *)"PSK not configured" },          { 0x05, (char *)"Roaming not enabled" },
+ 
+ };
+ 

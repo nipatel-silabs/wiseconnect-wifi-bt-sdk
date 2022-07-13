@@ -150,7 +150,7 @@
 
 //SL_PRINTF logging call
 #ifndef SL_PRINTF
-#define SL_PRINTF(...)
+#define SL_PRINTF(...) {}
 #endif
 
 /******************************************************

@@ -421,7 +421,7 @@ uint32_t rsi_bt_get_timeout(uint16_t cmd_type, uint16_t protocol_type)
                  || ((cmd_type >= RSI_BT_REQ_AVRCP_GET_CAPABILITES) && (cmd_type <= RSI_BT_REQ_AVRCP_CMD_REJECT))
                  || ((cmd_type >= RSI_BT_REQ_AVRCP_SET_ABS_VOL) && (cmd_type <= RSI_BT_REQ_AVRCP_SET_ABS_VOL_RESP))) {
         return_value = RSI_BT_AVRCP_CMD_RESP_WAIT_TIME;
-      } else if ((cmd_type >= RSI_BT_REQ_HFP_CONNECT) && (cmd_type <= RSI_BT_REQ_HFP_AUDIOTRANSFER)
+      } else if (((cmd_type >= RSI_BT_REQ_HFP_CONNECT) && (cmd_type <= RSI_BT_REQ_HFP_AUDIOTRANSFER))
                  || (cmd_type == RSI_BT_REQ_HFP_AUDIODATA)) {
         return_value = RSI_BT_HFP_CMD_RESP_WAIT_TIME;
       } else if ((cmd_type >= RSI_BT_REQ_PBAP_CONNECT) && (cmd_type <= RSI_BT_REQ_PBAP_CONTACTS)) {

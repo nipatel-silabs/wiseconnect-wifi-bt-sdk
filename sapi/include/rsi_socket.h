@@ -83,7 +83,7 @@
 #define PF_INET  AF_INET
 #define PF_INET6 AF_INET6
 
-#define INADDR_ANY              0
+//#define INADDR_ANY              0
 #define BSD_LOCAL_IF_INADDR_ANY 0xFFFFFFFF
 /* Define API error codes.  */
 
@@ -416,7 +416,7 @@ struct rsi_in6_addr {
   } _S6_un;
 };
 
-#define s6_addr   _S6_un._S6_u8
+//#define s6_addr   _S6_un._S6_u8
 #define s6_addr32 _S6_un._S6_u32
 
 struct rsi_sockaddr_in6 {
